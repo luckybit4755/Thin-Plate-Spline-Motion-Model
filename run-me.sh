@@ -212,15 +212,17 @@ _run_me_upsize_packages() {
 
 _run_me_upsize_get_video2x() {
 	local v2x_tgz=$( basename ${V2X_URL} )
-	local v2x_dir=$( echo ${v2x_tgz} | sed 's,\.tar.\gz,,' )
+	local v2x_dir="video2x-"$( echo ${v2x_tgz} | sed 's,\.tar.\gz,,' )
 
 	if [ -d ${v2x_dir} ] ; then 
 		return 0
-	fi
+	fi 
 
 	if [ ! -f ${v2x_tgz} ] ; then
 		wget ${V2X_URL} || return 5
 	fi
+
+	local root=${PWD}
 
 	tar -xvf ${v2x_tgz} || return 6
 	cd ${v2x_dir}/src || return 7
@@ -228,13 +230,11 @@ _run_me_upsize_get_video2x() {
 
 	# have to fix the paths
 
-	local root=${PWD}
 	if [ ! -f og-video2x.yaml ] ; then
 		mv -i video2x.yaml og-video2x.yaml 
 	fi
 
 	curl ${V2X_YAML_URL} | sed "s,/content/,${root}/,g" > video2x.yaml
-
 	cd ../.. || return 11
 }
 
