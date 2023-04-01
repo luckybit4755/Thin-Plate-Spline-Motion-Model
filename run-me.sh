@@ -20,9 +20,10 @@
 #############################################################################
 # sources and resources
 #
-# https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model
 # https://www.youtube.com/watch?v=XjObqq6we4U
 # https://huggingface.co/spaces/CVPR/Image-Animation-using-Thin-Plate-Spline-Motion-Model
+# https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model
+#
 
 #############################################################################
 # or from https://drive.google.com/drive/folders/1pNDo1ODQIb5HVObRtCmubqJikmR7VVLT?usp=sharing
@@ -182,7 +183,7 @@ _run_me_upsize() {
 	_run_me_upsize_packages
 	_run_me_upsize_get_video2x
 	_run_me_upsize_get_video2x_driver
-	#############################################################################
+
 	local driver=$( basename ${V2X_DRIVER_URL} | sed 's,-[0-9].*,,;s,-,_,g' )
 	python video2x-4.7.0/src/video2x.py \
 		-i ${RESULT} \
@@ -278,8 +279,6 @@ _run_me_gfpgan() {
 	# Install facexlib - https://github.com/xinntao/facexlib
 	pip install basicsr facexlib || return 1
 
-	##>>>		mkdir -p /usr/local/lib/python3.7/dist-packages/facexlib/weights  # for pre-trained models
-
 	if [ ! -d GFPGAN ] ; then
 		git clone https://github.com/TencentARC/GFPGAN.git || return 2
 		cd GFPGAN || return 3
@@ -294,8 +293,6 @@ _run_me_gfpgan() {
 
 	python inference_gfpgan.py -i ../${FRAMES} -o ../${FIXED} --aligned || return 10
 	cd .. || return 11
-	##>>>		!rm fixed.zip
-	##>>>		!zip -r fixed.zip fixed/restored_faces
 }
 
 #############################################################################
